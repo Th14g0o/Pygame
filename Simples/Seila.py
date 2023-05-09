@@ -28,8 +28,6 @@ if direction < 1:
 
 tela = pygame.display.set_mode((largura, altura), pygame.RESIZABLE | pygame.SCALED)
 pygame.display.set_caption("Game0001")
-Janela_Icone = pygame.image.load("Icone.png")
-pygame.display.set_icon(Janela_Icone)
 
 relogio = pygame.time.Clock()
 inicio = True
