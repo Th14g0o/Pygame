@@ -5,18 +5,19 @@ pygame.init()
 largura = 600
 altura = 600
 
-azul = (0,0,150)
+azul = (0,0,100)
 branco = (255, 255, 255)
 cor_1 = (0,160, 255)
 cor_2 = (200,255, 160)
 cor_3 = (255,255, 100)
 cor_selected = (0,244, 32)
-cor_venceu = (0, 240, 244)
+cor_venceu = (255, 255, 100)
 
 pos_p1_x = 0
 pos_p1_y = 0
 pos_p2_x = 600-5
 pos_p2_y = 0
+v_ps = 10
 
 pos_ball_x = 300 
 pos_ball_y = 300
@@ -25,6 +26,8 @@ v_ball_y = 5
 v_ball_x = 2
 if direction < 1:
     v_ball_x = -2
+esquerda = True
+direira = True
 
 tela = pygame.display.set_mode((largura, altura), pygame.RESIZABLE | pygame.SCALED)
 pygame.display.set_caption("Game0001")
@@ -37,6 +40,7 @@ def texto(msg, cor, tam, x, y):
         estilo_da_fonte = pygame.font.SysFont("comicsansms", tam)
         mensagem = estilo_da_fonte.render(msg, True, cor)
         tela.blit(mensagem, (x, y))
+        
 def colisao_simples(x1,y1, tamx1, tamy1, x2, y2, tamx2, tamy2):
     x = False
     y = False
@@ -85,9 +89,7 @@ def Fim(player):
         else:
             texto("Reiniciar", branco, 20, 110, 300)
             texto("Acabar", cor_selected, 20, 400, 300)
-            
-        
-            
+                 
         relogio.tick(60)
         pygame.display.flip()
         
@@ -99,58 +101,58 @@ while inicio:
             inicio = False
             
     if pygame.key.get_pressed()[pygame.K_w]:
-        pos_p2_y -= 7
+        pos_p2_y -= v_ps
     if pygame.key.get_pressed()[pygame.K_s]:
-        pos_p2_y += 7
+        pos_p2_y += v_ps
             
     if pygame.key.get_pressed()[pygame.K_DOWN]:
-        pos_p1_y += 7
+        pos_p1_y += v_ps
     if pygame.key.get_pressed()[pygame.K_UP]:
-        pos_p1_y -= 7
+        pos_p1_y -= v_ps
 
     if pos_p1_y < 0:
-        pos_p1_y += 5
+        pos_p1_y += v_ps
     if pos_p1_y > altura - (100):
-        pos_p1_y -= 5
+        pos_p1_y -= v_ps
 
     if pos_p2_y < 0:
-        pos_p2_y += 5
+        pos_p2_y += v_ps
     if pos_p2_y > altura - (100):
-        pos_p2_y -= 5
+        pos_p2_y -= v_ps
 
     pos_ball_y += v_ball_y
     if pos_ball_y > 600 - 25:
-        v_ball_y = -5
+        v_ball_y = -7
     if pos_ball_y < 0:
-        v_ball_y = 5
-
+        v_ball_y = 7
 
     pos_ball_x += v_ball_x
 
-    if colisao_simples(pos_p1_x, pos_p1_y, 5, 100, pos_ball_x, pos_ball_y, 25, 25) == True:
+    if colisao_simples(pos_p1_x, pos_p1_y, 5, 100, pos_ball_x, pos_ball_y, 25, 25) and esquerda:
         v_ball_x *= -1
         v_ball_x += 1
-    if colisao_simples(pos_p2_x, pos_p2_y, 5, 100, pos_ball_x, pos_ball_y, 25, 25) == True:
+        direita = True
+        esquerda = False
+    if colisao_simples(pos_p2_x, pos_p2_y, 5, 100, pos_ball_x, pos_ball_y, 25, 25) and direita:
         v_ball_x *= -1
         v_ball_x -= 1
+        direita = False
+        esquerda = True
 
-    if pos_ball_x < 0:
+    if pos_ball_x < 0 - 25:
         inicio = Fim(2)
-        pos_ball_x = 300 
-        pos_ball_y = 300
-        direction = randrange(-2, 2)
-        v_ball_x = 2
-        if direction < 1:
-            v_ball_x = -2
-    if pos_ball_x > 600:
+    if pos_ball_x > 600 + 25:
         inicio = Fim(1)
+    if pos_ball_x > 600 + 25 or pos_ball_x < 0 - 25:
         pos_ball_x = 300 
         pos_ball_y = 300
+        esquerda = True
+        direira = True
         direction = randrange(-2, 2)
         v_ball_x = 2
         if direction < 1:
             v_ball_x = -2
-        
+
     pygame.draw.rect(tela, cor_1,(pos_p1_x, pos_p1_y, 5, 100))
     pygame.draw.rect(tela, cor_2,(pos_p2_x, pos_p2_y, 5, 100))
     pygame.draw.rect(tela, cor_3,(pos_ball_x, pos_ball_y, 25, 25))
