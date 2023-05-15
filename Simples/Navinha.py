@@ -10,6 +10,8 @@ cor_vida = (255, 0, 0)
 cor_nave_inimigo = (0, 150, 0)
 cor_vidro_inimigo = (0, 255, 100)
 cor_score = (255,255,255)
+texto_normal = (255,255, 255)
+texto_selecionado = (0,100,200)
 
 largura = 300
 altura = 300
@@ -22,9 +24,9 @@ pos_y_b1 = 0
 tiro1 = False
 dano = 0
 
-pos_x_inimigo1 = randrange(19, largura -30, 10)
+pos_x_inimigo1 = randrange(15, largura-30, 15)
 pos_y_inimigo1 = randrange(-90, -40, 10)
-pos_x_inimigo2 = randrange(19, largura -30, 10)
+pos_x_inimigo2 = randrange(15, largura-30, 15)
 pos_y_inimigo2 = randrange(-140, -40, 10)
 
 pos_x_vida = 15
@@ -118,6 +120,39 @@ def colisao_simples(x1,y1, tamx1, tamy1, x2, y2, tamx2, tamy2):
     else:
         return False
 
+
+def Fim():
+    gameover = True
+    selecionado = 0
+    while gameover:
+        tela.fill(fundo)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                gameover = False
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    selecionado = 1
+                if event.key == pygame.K_LEFT:
+                    selecionado = 0
+                if event.key == pygame.K_RETURN:
+                    if selecionado == 0:
+                        gameover = False
+                        return True
+                    gameover = False
+                    return False
+        texto(f"SCORE FINAL: {int(score)}", 20, texto_normal, 61 , 0)
+        if selecionado == 0:
+            texto("REINICIAR", 17, texto_selecionado, 40, int(altura/2))
+            texto("FECHAR", 17, texto_normal, int(largura/2) + 30, int(altura/2))
+        else:
+            texto("REINICIAR", 17, texto_normal, 40 , int(altura/2))
+            texto("FECHAR", 17, texto_selecionado, int(largura/2) + 30, int(altura/2))
+
+        FPS.tick(60)
+        pygame.display.flip()
+            
+    
 while inicio:
     tela.fill(fundo)
     
@@ -125,7 +160,7 @@ while inicio:
         if event.type == pygame.QUIT:
             inicio = False
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a and tiro1 == False:
+            if event.key == pygame.K_RETURN and tiro1 == False:
                 pos_x_b1 = pos_x_p1
                 pos_y_b1 = pos_y_p1- 40
                 tiro1 = True
@@ -150,31 +185,39 @@ while inicio:
     pos_y_inimigo2 += 3
 
     if pos_y_inimigo1 > altura+40:
-        pos_x_inimigo1 = randrange(19,largura -30, 10)
+        pos_x_inimigo1 = randrange(15, largura-30, 15)
         pos_y_inimigo1 = randrange(-140, -40, 10)
     if pos_y_inimigo2 > altura+40:
-        pos_x_inimigo2 = randrange(19,largura -30, 10)
+        pos_x_inimigo2 = randrange(15, largura-30, 15)
         pos_y_inimigo2 = randrange(-90, -40, 10)
     
-    if colisao_simples(pos_x_b1, pos_y_b1, 10, 10, pos_x_inimigo1-20, pos_y_inimigo1-40, 40, 40):
-        pos_x_inimigo1 = randrange(19,largura -30, 10)
+    if colisao_simples(pos_x_b1, pos_y_b1, 10, 10, pos_x_inimigo1-20, pos_y_inimigo1-40, 50, 50):
+        pos_x_inimigo1 = randrange(15, largura-30, 15)
         pos_y_inimigo1 = randrange(-140, -40, 10)
-    if colisao_simples(pos_x_b1, pos_y_b1, 10, 10, pos_x_inimigo2-20, pos_y_inimigo2-40, 40, 40):
-        pos_x_inimigo2 = randrange(19,largura -30, 10)
+    if colisao_simples(pos_x_b1, pos_y_b1, 10, 10, pos_x_inimigo2-20, pos_y_inimigo2-40, 50, 50):
+        pos_x_inimigo2 = randrange(15, largura-30, 15)
         pos_y_inimigo2 = randrange(-140, -40, 10)
         
-    if colisao_simples(pos_x_p1-20, pos_y_p1-40, 40, 40, pos_x_inimigo2-20, pos_y_inimigo2-40, 40, 40):
+    if colisao_simples(pos_x_p1-20, pos_y_p1-40, 40, 40, pos_x_inimigo2-20, pos_y_inimigo2-40, 50, 50):
         dano += 1
-        pos_x_inimigo2 = randrange(19,largura -30, 10)
+        pos_x_inimigo2 = randrange(15, largura-30, 15)
         pos_y_inimigo2 = randrange(-90, -40, 10)
-    if colisao_simples(pos_x_p1-20, pos_y_p1-40, 40, 40, pos_x_inimigo1-20, pos_y_inimigo1-40, 40, 40):
+    if colisao_simples(pos_x_p1-20, pos_y_p1-40, 40, 40, pos_x_inimigo1-20, pos_y_inimigo1-40, 50, 50):
         dano += 1
-        pos_x_inimigo1 = randrange(19,largura -30, 10)
+        pos_x_inimigo1 = randrange(15, largura-30, 15)
         pos_y_inimigo1 = randrange(-90, -40, 10)
         
 
     if dano == 3:
-        inicio = False
+        inicio = Fim()
+        dano = 0
+        pos_x_inimigo2 = randrange(19,largura -30, 10)
+        pos_y_inimigo2 = randrange(-90, -40, 10)
+        pos_x_inimigo1 = randrange(19,largura -30, 10)
+        pos_y_inimigo1 = randrange(-140, -40, 10)
+        pos_x_p1 = int(largura/2)
+        score = 0
+        
     inimigo(pos_x_inimigo1, pos_y_inimigo1)
     inimigo(pos_x_inimigo2, pos_y_inimigo2)
     
