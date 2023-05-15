@@ -3,6 +3,7 @@
 + Simples
   + Jogo para dois que não sei o nome, mas acho que é hockey (**Seila**)
   + Jogo de uma navinha, com 3 vidas, e 2 inimigos (**Navinha**)
+  + Jogo de quebra uma parede
 
 ##
 
