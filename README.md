@@ -7,5 +7,4 @@
 
 ##
 
-> ![Python logo](https://www.python.org/static/img/python-logo.png) 
-![Pygame logo](https://www.pygame.org/images/logo_lofi.png)
+![Python](https://img.shields.io/badge/-python-FFCC01?logo=python&style=for-the-badge) 
