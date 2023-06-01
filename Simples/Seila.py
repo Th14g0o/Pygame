@@ -27,7 +27,7 @@ v_ball_x = 2
 if direction < 1:
     v_ball_x = -2
 esquerda = True
-direira = True
+direita = True
 
 tela = pygame.display.set_mode((largura, altura), pygame.RESIZABLE | pygame.SCALED)
 pygame.display.set_caption("Game0001")
